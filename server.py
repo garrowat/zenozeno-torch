@@ -1,5 +1,5 @@
 # AI Stuff
-from transformers import AutoModelWithLMHead, AutoTokenizer
+from transformers import GPT2LMHeadModel, AutoTokenizer
 
 # Flask stuff
 from flask import Flask, url_for, make_response
@@ -22,7 +22,7 @@ def output_json(data, code, headers=None):
     return response
 
 tokenizer = AutoTokenizer.from_pretrained("gpt2", eos_token=".")
-model = AutoModelWithLMHead.from_pretrained("./models", cache_dir=None, from_tf=False, state_dict=None)
+model = GPT2LMHeadModel.from_pretrained("./models", cache_dir=None, from_tf=False, state_dict=None)
 
 def generateQuotes(input):
   input = tokenizer.encode(input, return_tensors="pt")
