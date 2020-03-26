@@ -24,10 +24,8 @@ def output_json(data, code, headers=None):
 tokenizer = AutoTokenizer.from_pretrained("gpt2", eos_token=".")
 model = AutoModelWithLMHead.from_pretrained("./models", cache_dir=None, from_tf=False, state_dict=None)
 
-sequence = f"A good life"
-
 def generateQuotes(input):
-  input = tokenizer.encode(sequence, return_tensors="pt")
+  input = tokenizer.encode(input, return_tensors="pt")
   outputs = model.generate(
     input,
     do_sample=True,
@@ -47,8 +45,10 @@ class QuoteView(FlaskView):
   @route('/quote/<input>')
   def get_proverb(self, input):
       input = str(input)
-      quotes = generateQuotes(input)
-      return quotes
+      quotes = []
+      for sample_output in generateQuotes(input):
+        quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
+      return {"quotes": quotes}
 
 QuoteView.register(app)
 
