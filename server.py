@@ -1,12 +1,11 @@
-# AI Stuff
-from transformers import GPT2LMHeadModel, AutoTokenizer
-
 # Flask stuff
 from flask import Flask, url_for, make_response
 from flask_classful import FlaskView, route
 from flask_cors import CORS, cross_origin
 
 import json
+
+from transformers import GPT2LMHeadModel, AutoTokenizer
 
 app = Flask(__name__)
 CORS(app)
