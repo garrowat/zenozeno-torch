@@ -1,5 +1,5 @@
 # AI Stuff
-from transformers import *
+from transformers import AutoModelWithLMHead, AutoTokenizer
 
 # Flask stuff
 from flask import Flask, url_for, make_response
