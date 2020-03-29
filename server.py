@@ -37,18 +37,27 @@ def generateQuotes(input):
   )
   return outputs;
 
+class TestView(FlaskView):
+  route_base = '/zenozeno'
+  representations = {'application/json': output_json}
+
+  @route('/test/<input>')
+  def get_test(self, input):
+    return {"test": input}
+
 class QuoteView(FlaskView):
   route_base = '/zenozeno'
   representations = {'application/json': output_json}
 
   @route('/quote/<input>')
-  def get_proverb(self, input):
-      input = str(input)
-      quotes = []
-      for sample_output in generateQuotes(input):
-        quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
-      return {"quotes": quotes}
+  def get_quotes(self, input):
+    input = str(input)
+    quotes = []
+    for sample_output in generateQuotes(input):
+      quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
+    return {"quotes": quotes}
 
+TestView.register(app)
 QuoteView.register(app)
 
 if __name__ == "__main__":
