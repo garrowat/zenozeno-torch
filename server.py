@@ -1,5 +1,5 @@
 # Flask stuff
-from flask import Flask, url_for, make_response
+from flask import Flask, url_for, make_response, request
 from flask_classful import FlaskView, route
 from flask_cors import CORS, cross_origin
 
@@ -45,20 +45,20 @@ class TestView(FlaskView):
   def get_test(self, input):
     return {"test": input}
 
-class QuoteView(FlaskView):
-  route_base = '/zenozeno'
+class QuotesView(FlaskView):
+  route_base = '/zenozeno/quotes'
   representations = {'application/json': output_json}
 
-  @route('/quote/<input>')
-  def get_quotes(self, input):
-    input = str(input)
+  def post(self):
+    data = request.get_json()
     quotes = []
-    for sample_output in generateQuotes(input):
+    for sample_output in generateQuotes(data['input']):
       quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
     return {"quotes": quotes}
 
 TestView.register(app)
 QuoteView.register(app)
+QuotesView.register(app)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
