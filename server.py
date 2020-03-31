@@ -57,7 +57,6 @@ class QuotesView(FlaskView):
     return {"quotes": quotes}
 
 TestView.register(app)
-QuoteView.register(app)
 QuotesView.register(app)
 
 if __name__ == "__main__":
