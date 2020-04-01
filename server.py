@@ -67,8 +67,8 @@ class QuotesView(FlaskView):
         data['input'],
         data['numberOfQuotes'],
         data['maxQuoteLength'],
-        data['top_k'],
-        data['top_p'],
+        data['topK'],
+        data['topP'],
         data['temperature']
       ):
       quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
