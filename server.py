@@ -49,7 +49,7 @@ class QuotesView(FlaskView):
   route_base = '/zenozeno/quotes'
   representations = {'application/json': output_json}
 
-  @cross_origin()
+  @app.route('/')
   def post(self):
     data = request.get_json()
     quotes = []
