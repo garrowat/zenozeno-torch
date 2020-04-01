@@ -61,9 +61,9 @@ class QuotesView(FlaskView):
     data = request.get_json()
     quotes = []
     for sample_output in generateQuotes(
-        data['input'],
-        data['numberOfQuotes'],
-        data['maxQuoteLength']
+        data['input'] or 'Life is not',
+        data['numberOfQuotes'] or 1,
+        data['maxQuoteLength'] or 100,
       ):
       quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
     return {"quotes": quotes}
