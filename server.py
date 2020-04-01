@@ -23,12 +23,19 @@ def output_json(data, code, headers=None):
 tokenizer = AutoTokenizer.from_pretrained("gpt2", eos_token=".")
 model = GPT2LMHeadModel.from_pretrained("./models", cache_dir=None, from_tf=False, state_dict=None)
 
-def generateQuotes(input, num_quotes):
+def generateQuotes(
+  input="The meaning of life is",
+  num_quotes=1,
+  max_length=100
+):
   input = tokenizer.encode(input, return_tensors="pt")
+  if num_quotes > 5:
+    num_quotes = 5
+
   outputs = model.generate(
     input,
     do_sample=True,
-    max_length=100,
+    max_length=max_length,
     top_k=40,
     top_p=0.9,
     temperature=0.7,
@@ -53,7 +60,11 @@ class QuotesView(FlaskView):
   def post(self):
     data = request.get_json()
     quotes = []
-    for sample_output in generateQuotes(data['input'], data['numberOfQuotes']):
+    for sample_output in generateQuotes(
+        data['input'],
+        data['numberOfQuotes'],
+        data['maxQuoteLength']
+      ):
       quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
     return {"quotes": quotes}
 
