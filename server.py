@@ -64,12 +64,12 @@ class QuotesView(FlaskView):
     data = request.get_json()
     quotes = []
     for sample_output in generateQuotes(
-        data['input']',
+        data['input'],
         data['numberOfQuotes'],
         data['maxQuoteLength'],
         data['top_k'],
         data['top_p'],
-        data['temperature'],
+        data['temperature']
       ):
       quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
     return {"quotes": quotes}
