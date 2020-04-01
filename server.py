@@ -23,7 +23,7 @@ def output_json(data, code, headers=None):
 tokenizer = AutoTokenizer.from_pretrained("gpt2", eos_token=".")
 model = GPT2LMHeadModel.from_pretrained("./models", cache_dir=None, from_tf=False, state_dict=None)
 
-def generateQuotes(input):
+def generateQuotes(input, num_quotes):
   input = tokenizer.encode(input, return_tensors="pt")
   outputs = model.generate(
     input,
@@ -33,7 +33,7 @@ def generateQuotes(input):
     top_p=0.9,
     temperature=0.7,
     eos_token_id=tokenizer.eos_token_id,
-    num_return_sequences=3,
+    num_return_sequences=num_quotes,
   )
   return outputs;
 
@@ -49,10 +49,11 @@ class QuotesView(FlaskView):
   route_base = '/zenozeno/quotes'
   representations = {'application/json': output_json}
 
+  @cross_origin()
   def post(self):
     data = request.get_json()
     quotes = []
-    for sample_output in generateQuotes(data['input']):
+    for sample_output in generateQuotes(data['input'], data['numberOfQuotes']):
       quotes.append(tokenizer.decode(sample_output, skip_special_tokens=True))
     return {"quotes": quotes}
 
